@@ -5,7 +5,7 @@ const cors = require('cors');
 require('dotenv').config();
 const app = express();
 const users = require('./routes/user.routes');
-const students = require('./routes/student.routes');
+const students=require('./routes/students.routes')
 const questions=require('./routes/question.routes')
 const lecture=require('./routes/lecture.routes')
 const instructor=require('./routes/instructor.routes')
@@ -28,12 +28,17 @@ app.use(passport.initialize());
 
 const db = require('./models/index');
 app.use('/api/users', users);
-app.use('/api/users', students);
+app.use('/api/students', students);
 app.use('/api/questions', questions);
 app.use('/api/lecture', lecture);
 app.use('/api/instructor', instructor);
 app.use('/api/course', course);
 app.use('/api/answer', answer);
+
+
+
+
+
 
 
 // const { db } = require('./models/user');
