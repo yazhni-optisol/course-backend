@@ -14,17 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false,
     },
-    uid: {
+    userID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: {
           msg: 'userID cannot be empty',
         },
-      },
-      references: {
-        model: 'Users',
-        key: 'id',
       },
     },
 
@@ -35,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     git: { type: DataTypes.STRING },
     others: { type: DataTypes.STRING },
     salary: { type: DataTypes.INTEGER, default: 0 },
-    nCourses: { type: DataTypes.INTEGER, default: 0 },
+    no_of_Courses: { type: DataTypes.INTEGER, default: 0 },
     date: { type: DataTypes.DATE, default: Date.now },
 
   }, {

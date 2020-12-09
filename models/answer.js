@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
 
-    uid: {
+    userID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -25,18 +25,15 @@ module.exports = (sequelize, DataTypes) => {
       },
 
     },
-    qid: {
+    questionID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: {
-          msg: 'userID cannot be empty',
+          msg: 'questionID cannot be empty',
         },
       },
-      references: {
-        model: 'Questions',
-        key: 'id',
-      },
+
     },
     text: { type: DataTypes.STRING, allowNull: false },
     sno: { type: DataTypes.INTEGER, default: 0 },
@@ -48,5 +45,3 @@ module.exports = (sequelize, DataTypes) => {
   });
   return Answer;
 };
-
-// User.Information = User.belongsTo(Information);

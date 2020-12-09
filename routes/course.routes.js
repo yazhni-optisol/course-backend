@@ -1,16 +1,17 @@
 const express = require('express');
+
 const router = express.Router();
+const passport = require('passport');
+const {
+  create, createdby, specified, suggested, destroy,
+} = require('../controllers/coursecontrol');
 
-const { create,createdby ,specified,suggested,del} = require('../controllers/coursecontrol')
-
-//questioncontrol
+passport.authenticate('jwt', { session: false });
 
 router.post('/create', create);
-router.get('/createdby/:uid',createdby)
-router.get( 'specified/:cid',specified)
-router.get( '/suggested/:uid',suggested)
-router.delete('/del/:cid',del)
+router.get('/createdby/:userID', createdby);
+router.get('specified/:courseID', specified);
+router.get('/suggested/:userID', suggested);
+router.delete('/destroy/:courseID', destroy);
 
-
-
-module.exports=router;
+module.exports = router;

@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false,
     },
-    iid: {
+    instructorID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -53,9 +53,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       default: Date.now,
     },
-    nStudents: { type: DataTypes.INTEGER, default: 0 },
-    nLectures: { type: DataTypes.INTEGER, default: 0 },
-    nQuestions: { type: DataTypes.INTEGER, default: 0 },
+    no_of_Students: { type: DataTypes.INTEGER, default: 0 },
+    no_of_Lectures: { type: DataTypes.INTEGER, default: 0 },
+    no_of_Questions: { type: DataTypes.INTEGER, default: 0 },
 
   }, {
     sequelize,

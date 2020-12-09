@@ -1,14 +1,16 @@
 const express = require('express');
+
 const router = express.Router();
+const passport = require('passport');
+const {
+  create, lectureCourse, singleLecture, destroy,
+} = require('../controllers/lecturecontrol');
 
-const { create,of,single,del } = require('../controllers/lecturecontrol')
-
-//questioncontrol
+passport.authenticate('jwt', { session: false });
 
 router.post('/create', create);
-router.get('/of/:cid', of);
-router.get('/single/:lid',single)
-router.delete('/del/:lid',del)
+router.get('/lectureCourse/:courseID', lectureCourse);
+router.get('/singleLecture/:lectureID', singleLecture);
+router.delete('/destroy/:lectureID', destroy);
 
-
-module.exports=router;
+module.exports = router;

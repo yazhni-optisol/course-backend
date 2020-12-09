@@ -1,19 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const passport=require('passport')
+const passport = require('passport');
 const cors = require('cors');
 require('dotenv').config();
+
 const app = express();
 const users = require('./routes/user.routes');
-const students=require('./routes/students.routes')
-const questions=require('./routes/question.routes')
-const lecture=require('./routes/lecture.routes')
-const instructor=require('./routes/instructor.routes')
-const course=require('./routes/course.routes')
-const answer=require('./routes/answer.routes')
-
+const students = require('./routes/students.routes');
+const questions = require('./routes/question.routes');
+const lecture = require('./routes/lecture.routes');
+const instructor = require('./routes/instructor.routes');
+const course = require('./routes/course.routes');
+const answer = require('./routes/answer.routes');
 require('./keys/passport')(passport);
-
 
 const corsOptions = {
   origin: 'http://localhost:8081',
@@ -24,9 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
 app.use(passport.initialize());
 
-
-
 const db = require('./models/index');
+
 app.use('/api/users', users);
 app.use('/api/students', students);
 app.use('/api/questions', questions);
@@ -34,12 +32,6 @@ app.use('/api/lecture', lecture);
 app.use('/api/instructor', instructor);
 app.use('/api/course', course);
 app.use('/api/answer', answer);
-
-
-
-
-
-
 
 // const { db } = require('./models/user');
 // db.sequelize.sync();
@@ -60,5 +52,5 @@ db.sequelize.sync().then(() => {
     console.log(`Server is running on port ${PORT}.`);
   });
 }, (err) => {
-  console.log(22222,err)
+  console.log(22222, err);
 });

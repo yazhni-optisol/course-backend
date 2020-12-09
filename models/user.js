@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false,
     },
-     name: { type: DataTypes.STRING, allowNull: false },
+    name: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
     role: { type: DataTypes.STRING, allowNull: false },
@@ -28,20 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
   });
   console.log(User === sequelize.models.User); // true
-
-  //   User.associate = (models) => {
-  //     User.hasOne(models.Question, {
-  //         foreignKey: "uid",
-
-  //     });
-  // }
-
-  // User.associate = (models) => {
-  //   User.hasOne(models.Answer, {
-  //       foreignKey: "uid",
-
-  //   });
-  // }
 
   return User;
 };

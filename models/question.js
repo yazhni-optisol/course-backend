@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false,
     },
-    uid: {
+    userID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -26,12 +26,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
 
-    cid: {
+    courseID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notNull: {
-          msg: 'userID cannot be empty',
+          msg: 'CourseID cannot be empty',
         },
       },
 
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     text: { type: DataTypes.STRING, allowNull: false },
     sno: { type: DataTypes.INTEGER, default: 0 },
     date: { type: DataTypes.DATE, default: Date.now },
-    nAnswers: { type: DataTypes.INTEGER, default: 0 },
+    no_of_Answers: { type: DataTypes.INTEGER, default: 0 },
 
   }, {
     sequelize,
@@ -47,15 +47,5 @@ module.exports = (sequelize, DataTypes) => {
   });
   console.log(Question === sequelize.models.Question); // true
 
-  //   Question.associate = (models) => {
-  //     Question.belongsTo(models.Answer, {
-  //         foreignKey: "qid",
-  //         localfield:"_id"
-  //     })
-
-  // }
-
   return Question;
 };
-
-// User.Information = User.belongsTo(Information);

@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const { Course } = require('./course');
+// const { Course } = require('./course');
 
 module.exports = (sequelize, DataTypes) => {
   class Lecture extends Model {
@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
 
-    cid: {
+    courseID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -41,5 +41,3 @@ module.exports = (sequelize, DataTypes) => {
 
   return Lecture;
 };
-
-// User.Information = User.belongsTo(Information);

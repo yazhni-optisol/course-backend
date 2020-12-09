@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     },
 
     date: { type: DataTypes.DATE, default: Date.now },
-    nCourses: { type: DataTypes.INTEGER, default: 0 },
+    no_of_Courses: { type: DataTypes.INTEGER, default: 0 },
 
   }, {
     sequelize,

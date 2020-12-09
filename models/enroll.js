@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       autoIncrement: true,
       allowNull: false,
     },
-    uid: {
+    userID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       },
 
     },
-    cid: {
+    courseID: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
@@ -33,10 +33,7 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'userID cannot be empty',
         },
       },
-      references: {
-        model: 'Courses',
-        key: 'id',
-      },
+
     },
 
   }, {
@@ -47,5 +44,3 @@ module.exports = (sequelize, DataTypes) => {
 
   return Enroll;
 };
-
-// User.Information = User.belongsTo(Information);

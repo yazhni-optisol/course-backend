@@ -1,12 +1,11 @@
 const express = require('express');
+
 const router = express.Router();
+const passport = require('passport');
+const { getAll } = require('../controllers/instructorcontrol');
 
-const { getAll } = require('../controllers/instructorcontrol')
+passport.authenticate('jwt', { session: false });
 
-//questioncontrol
+router.get('/getAll/:userID', getAll);
 
-router.get('/getAll/:uid', getAll);
-
-
-
-module.exports=router;
+module.exports = router;

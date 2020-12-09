@@ -1,12 +1,13 @@
 const express = require('express');
+
 const router = express.Router();
+const passport = require('passport');
+const { create, askedin, delete1 } = require('../controllers/questioncontrol');
 
-const { create,askedin,del } = require('../controllers/questioncontrol')
-
-//questioncontrol
+passport.authenticate('jwt', { session: false });
 
 router.post('/create', create);
-router.get('/askedin/:cid', askedin);
-router.delete('/del/:qid', del);
+router.get('/askedin/:courseID', askedin);
+router.delete('/delete1/:questionID', delete1);
 
-module.exports=router;
+module.exports = router;
