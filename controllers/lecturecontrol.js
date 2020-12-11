@@ -29,10 +29,7 @@ exports.create = async (req, res) => {
 // @access   Private
 exports.lectureCourse = async (req, res) => {
   // get IDs of lectures:
-  const { lectures } = await Course.findByPk(req.params.courseID).include(
-    'lectures',
-  );
-
+  const { lectures } = await Course.findOne({ where: { id: req.params.courseID }, include: ['lectures'] });
   if (!lectures) res.status(404).json([]);
 
   res.json(lectures);

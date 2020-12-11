@@ -25,8 +25,7 @@ exports.create = async (req, res) => {
 // @desc     returns the courses created by the instructor
 // @access   Private
 exports.createdby = async (req, res) => {
-  const { courses } = await Instructor.findOne({ userID: req.params.userID })
-    .include('courses', null, null, { sort: { date: -1 } });
+  const { courses } = await Instructor.findOne({ where: { id: req.params.userID }, include: ['courses', null, null, { sort: { date: -1 } }] });
 
   if (!courses) {
     res.status(404).json([]);

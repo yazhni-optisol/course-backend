@@ -29,21 +29,19 @@ exports.create = async (req, res) => {
 // @desc     Get a list of questions asked in the given Course
 // @access   Private
 exports.askedin = async (req, res) => {
-  const { questions } = await Course.findByPk(req.params.courseID).include(
-    'questions',
-    null,
-    null,
-    { sort: { sno: 1 } },
-  );
-
+  const { questions } = await Course.findOne({ where: { id: req.params.courseID }, include: ['questions', null, null, { sort: { sno: 1 } }] });
   if (!questions) res.status(404).json([]);
 
   const result = [];
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < questions.length; i++) {
-    const user = User.findByPk(questions[i].userID).select(
-      'name email role profilePic -_id',
-    );
+    const user = User.findByPk(questions[i].userID, {
+      include: [{
+        model: User,
+        attributes: ['name', 'email', 'role', 'profilePic'], // Add column names here inside attributes array.
+        required: true,
+      }],
+    });
     const data = { ...questions[i].doc };
     data.user = { ...user.doc };
     result.push(data);

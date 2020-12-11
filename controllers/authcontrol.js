@@ -36,6 +36,7 @@ exports.signup = async (req, res) => {
       password_confirmation: 'required',
     });
   }
+
   if (password !== password2) {
     errors.push({ password: 'mismatch' });
   }
@@ -51,7 +52,7 @@ exports.signup = async (req, res) => {
   if (user) return res.status(400).json({ email: 'Email already registered!' });
 
   let newUser = new User({
-    name, email, gender, role,
+    name, email, password, gender, role,
   });
 
   bcrypt.genSalt(10, (err, salt) => {

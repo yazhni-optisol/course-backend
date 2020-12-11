@@ -30,9 +30,7 @@ exports.enroll = async (req, res) => {
 // @desc     Returns the students enrolled in the given course
 // @access   Private
 exports.enrolledin = async (req, res) => {
-  const { studentIDs } = await Course.findOne({
-    id: req.params.courseID,
-  }).include[('students', 'userID')];
+  const { studentIDs } = await Course.findOne({ where: { id: req.params.courseID }, include: ['students', 'userID'] });
 
   if (!studentIDs) res.status(404).json([]);
 

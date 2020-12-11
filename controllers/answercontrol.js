@@ -26,22 +26,20 @@ exports.create = async (req, res) => {
 // @desc     Get a list of all answers for a given question.
 // @access   Private
 exports.listAnswer = async (req, res) => {
-  const { answers } = await Question.findByPk(req.params.questionID).include(
-    'answers',
-    null,
-    null,
-    { sort: { sno: 1 } },
-  );
-
+  const { answers } = await Question.findOne({ where: { id: req.params.questionID }, include: ['answers', null, null, { sort: { sno: 1 } }] });
   if (!answers) res.status(404).json([]);
   const result = [];
 
   // eslint-disable-next-line no-undef
   for (i = 0; i < answers.length; i++) {
     // eslint-disable-next-line no-undef
-    const user = User.findByPk(answers[i].userID).select(
-      'name email role profilePic -_id',
-    );
+    const user = User.findByPk(answers[i].userID, {
+      include: [{
+        model: User,
+        attributes: ['name', 'email', 'role', 'profilePic'], // Add column names here inside attributes array.
+        required: true,
+      }],
+    });
     // eslint-disable-next-line no-undef
     const data = { ...answers[i].doc };
     data.user = { ...user.doc };
