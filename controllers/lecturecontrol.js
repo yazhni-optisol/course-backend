@@ -29,7 +29,7 @@ exports.create = async (req, res) => {
 // @access   Private
 exports.lectureCourse = async (req, res) => {
   // get IDs of lectures:
-  const { lectures } = await Course.findByPk(req.params.courseID).populate(
+  const { lectures } = await Course.findByPk(req.params.courseID).include(
     'lectures',
   );
 

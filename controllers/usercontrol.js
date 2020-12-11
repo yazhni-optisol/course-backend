@@ -32,7 +32,7 @@ exports.enroll = async (req, res) => {
 exports.enrolledin = async (req, res) => {
   const { studentIDs } = await Course.findOne({
     id: req.params.courseID,
-  }).populate('students', 'userID');
+  }).include[('students', 'userID')];
 
   if (!studentIDs) res.status(404).json([]);
 

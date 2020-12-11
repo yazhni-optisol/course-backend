@@ -1,3 +1,4 @@
+/* eslint-disable no-plusplus */
 const { Question, Answer, User } = require('../models');
 // ============================================================================
 // @route    POST: /api/answers/create
@@ -25,7 +26,7 @@ exports.create = async (req, res) => {
 // @desc     Get a list of all answers for a given question.
 // @access   Private
 exports.listAnswer = async (req, res) => {
-  const { answers } = await Question.findByPk(req.params.questionID).populate(
+  const { answers } = await Question.findByPk(req.params.questionID).include(
     'answers',
     null,
     null,

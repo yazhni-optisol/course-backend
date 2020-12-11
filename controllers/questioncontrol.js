@@ -29,7 +29,7 @@ exports.create = async (req, res) => {
 // @desc     Get a list of questions asked in the given Course
 // @access   Private
 exports.askedin = async (req, res) => {
-  const { questions } = await Course.findByPk(req.params.courseID).populate(
+  const { questions } = await Course.findByPk(req.params.courseID).include(
     'questions',
     null,
     null,
@@ -56,7 +56,7 @@ exports.askedin = async (req, res) => {
 // @desc     Deletes the specified course
 // @access   Private && Instructor
 exports.delete1 = async (req, res) => {
-  const question = await Question.findByPk(req.params.questionID).populate('answers');
+  const question = await Question.findByPk(req.params.questionID).include('answers');
 
   if (!question) {
     res.status(404).json({ question: 'Question not found!' });

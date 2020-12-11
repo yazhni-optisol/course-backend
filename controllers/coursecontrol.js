@@ -26,8 +26,7 @@ exports.create = async (req, res) => {
 // @access   Private
 exports.createdby = async (req, res) => {
   const { courses } = await Instructor.findOne({ userID: req.params.userID })
-    .populate('courses', null, null, { sort: { date: -1 } })
-    .lean();
+    .include('courses', null, null, { sort: { date: -1 } });
 
   if (!courses) {
     res.status(404).json([]);
@@ -38,8 +37,7 @@ exports.createdby = async (req, res) => {
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < courses.length; i++) {
     const Inst = User.findByPk(courses[i].instructorID)
-      .select('name email profilePic -_id')
-      .lean();
+      .select('name email profilePic -_id');
     const data = courses[i];
     data.instructor = Inst;
     result.push(data);
@@ -64,7 +62,7 @@ exports.specified = async (req, res) => {
 // @desc     returns the list of all courses, sorted by the date created
 // @access   Private
 exports.suggested = async (req, res) => {
-  const courses = await Course.find({}).lean();
+  const courses = await Course.find({});
 
   if (!courses) {
     res.status(404).json([]);
@@ -75,8 +73,7 @@ exports.suggested = async (req, res) => {
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < courses.length; i++) {
     const Inst = User.findByPk(courses[i].instructorID)
-      .select('name email profilePic -_id')
-      .lean();
+      .select('name email profilePic -_id');
     courses[i].instructor = Inst;
     result.push(courses[i]);
   }
