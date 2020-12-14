@@ -35,8 +35,14 @@ exports.createdby = async (req, res) => {
   const result = [];
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < courses.length; i++) {
-    const Inst = User.findByPk(courses[i].instructorID)
-      .select('name email profilePic -_id');
+    const Inst = User.findByPk(courses[i].instructorID, {
+      include: [{
+        model: User,
+        attributes: ['name', 'email', 'profilePic'], // Add column names here inside attributes array.
+
+      }],
+    });
+    // eslint-disable-next-line no-undef
     const data = courses[i];
     data.instructor = Inst;
     result.push(data);
@@ -71,8 +77,14 @@ exports.suggested = async (req, res) => {
   const result = [];
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < courses.length; i++) {
-    const Inst = User.findByPk(courses[i].instructorID)
-      .select('name email profilePic -_id');
+    const Inst = User.findByPk(courses[i].instructorID, {
+      include: [{
+        model: User,
+        attributes: ['name', 'email', 'profilePic'], // Add column names here inside attributes array.
+
+      }],
+    });
+    // eslint-disable-next-line no-undef
     courses[i].instructor = Inst;
     result.push(courses[i]);
   }
