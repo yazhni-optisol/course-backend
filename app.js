@@ -33,11 +33,11 @@ app.use('/api/instructor', instructor);
 app.use('/api/course', course);
 app.use('/api/answer', answer);
 
-// const { db } = require('./models/user');
-// db.sequelize.sync();
-// drop the table if it already exists
+// // const { db } = require('./models/user');
+db.sequelize.sync().then();
+// // drop the table if it already exists
 // db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
+//   console.log('Drop and re-sync db');
 // });
 
 // simple route
@@ -45,12 +45,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Student Management' });
 });
 
-// set port, listen for requests
-db.sequelize.sync().then(() => {
-  const PORT = process.env.PORT || 8000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`);
-  });
-}, (err) => {
-  console.log(22222, err);
+const PORT = process.env.PORT || 8000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
 });

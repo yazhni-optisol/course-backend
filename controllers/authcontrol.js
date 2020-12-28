@@ -1,10 +1,11 @@
+/* eslint-disable nonblock-statement-body-position */
+
 /* eslint-disable consistent-return */
 /* eslint-disable no-unused-vars */
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { secretOrKey } = require('../keys/private');
-const { User, Instructor, Information } = require('../models');
-
+const db = require('../models/index');
 //= =========================================================================
 /* For Signup first it check the validation and
 then it check whether the email is already exit
@@ -13,9 +14,9 @@ or not if email is not exited it will encrypt the password and store to the data
 
 const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 exports.signup = async (req, res) => {
-  const {
-    name, email, password, password2, gender, role,
-  } = req.body;
+  console.log(db);
+  // eslint-disable-next-line object-curly-newline
+  const { name, email, password, password2, gender, role } = req.body;
   const errors = [];
   // validation of signup
   if (!name) {
@@ -43,7 +44,9 @@ exports.signup = async (req, res) => {
   if (errors.length > 0) {
     return res.status(422).json({ errors });
   }
-  const user = await User.findOne({
+  console.log(req.body);
+
+  const user = await db.User.findOne({
     where: {
       email: req.body.email,
       role: req.body.role,
@@ -51,24 +54,24 @@ exports.signup = async (req, res) => {
   });
   if (user) return res.status(400).json({ email: 'Email already registered!' });
 
-  let newUser = new User({
-    name, email, password, gender, role,
+  const newUser = db.User.build({
+    name,
+    email,
+    password,
+    gender,
+    role,
   });
+  console.log(newUser);
 
-  bcrypt.genSalt(10, (err, salt) => {
-    bcrypt.hash(password, salt, async (hash) => {
-      if (err) throw err;
-      newUser.password = hash;
-      newUser = await newUser.save();
-      res.json(newUser);
-    });
-  });
+  newUser.password = await bcrypt.hash(password, 10);
+  await newUser.save();
+  res.json(newUser);
 
   if (role === 'Instructor') {
-    let newInst = new Instructor({ userID: newUser.id });
+    let newInst = db.Instructor.build({ userID: newUser.id });
     newInst = await newInst.save();
   } else {
-    let newStd = new Information({ userID: newUser.id });
+    let newStd = db.Information.build({ userID: newUser.id });
     newStd = await newStd.save();
   }
 };
@@ -99,7 +102,7 @@ exports.signin = async (req, res) => {
   if (errors.length > 0) {
     return res.status(422).json({ errors });
   }
-  const user = await User.findOne({
+  const user = await db.User.findOne({
     where: {
       email: req.body.email,
       role: req.body.role,
@@ -108,8 +111,9 @@ exports.signin = async (req, res) => {
   if (!user) return res.status(404).json({ email: 'User not found!' });
 
   const matched = await bcrypt.compare(password, user.password);
-  if (!matched) return res.status(400).json({ password: 'password incorrect!' });
-
+  // eslint-disable-next-line curly
+  if (!matched)
+    return res.status(400).json({ password: 'password incorrect!' });
   const payload = {
     id: user.id,
     name: user.name,
@@ -132,7 +136,7 @@ exports.signin = async (req, res) => {
 
 // eslint-disable-next-line no-unused-expressions
 exports.current = async (req, res) => {
-  res.json(req.user);
+  await res.json(req.user);
 };
 
 // ============================================================================
@@ -140,7 +144,8 @@ exports.current = async (req, res) => {
 // @desc     Deletes the specified course
 // @access   Private && Instructor
 exports.destroy = async (req, res) => {
-  const user = await User.findByPk(req.params.userID);
+  const user = await db.User.findByPk(req.params.userID);
+  console.log(user, 'yyy');
 
   if (!user) {
     res.status(404).json({ user: 'User not found!' });
@@ -152,6 +157,7 @@ exports.destroy = async (req, res) => {
     return;
   }
 
+  // eslint-disable-next-line no-undef
   await User.destroy(user.id);
   res.json(user);
 };

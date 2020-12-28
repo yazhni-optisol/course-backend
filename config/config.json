@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password":"root",
-    "database": "testingapp",
+    "database": "infoapp",
     "host": "localhost",
     "dialect": "postgres",
     "port":5000
@@ -10,7 +10,7 @@
   "test": {
     "username": "postgres",
     "password": "root",
-    "database": "testingapp",
+    "database": "infoapp",
     "host": "localhost",
     "dialect": "postgres",
     "port":5000
@@ -18,7 +18,7 @@
   "production": {
     "username": "postgres",
     "password": "root",
-    "database": "testingapp",
+    "database": "infoapp",
     "host": "localhost",
     "dialect": "postgres",
     "port":5000

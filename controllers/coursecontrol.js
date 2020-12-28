@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
-const {
-  Course, Instructor, User,
-} = require('../models');
+// const {
+//   Course, Instructor, User,
+// } = require('../models');
+const db = require('../models/index');
 
 // ============================================================================
 // @route    POST: /api/courses/create
@@ -11,7 +12,7 @@ exports.create = async (req, res) => {
   if (req.user.role !== 'Instructor') res.status(401).send('Unauthorized');
 
   const course = req.body;
-  const exists = await Course.findOne({ title: course.title });
+  const exists = await db.Course.findOne({ title: course.title });
   if (exists) res.status(400).json({ title: 'Title is already taken!' });
 
   course.instructorID = req.user.id;
@@ -25,7 +26,10 @@ exports.create = async (req, res) => {
 // @desc     returns the courses created by the instructor
 // @access   Private
 exports.createdby = async (req, res) => {
-  const { courses } = await Instructor.findOne({ where: { id: req.params.userID }, include: ['courses', null, null, { sort: { date: -1 } }] });
+  const { courses } = await db.Instructor.findOne({
+    where: { id: req.params.userID },
+    include: ['courses', null, null, { sort: { date: -1 } }],
+  });
 
   if (!courses) {
     res.status(404).json([]);
@@ -36,11 +40,12 @@ exports.createdby = async (req, res) => {
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < courses.length; i++) {
     const Inst = User.findByPk(courses[i].instructorID, {
-      include: [{
-        model: User,
-        attributes: ['name', 'email', 'profilePic'], // Add column names here inside attributes array.
-
-      }],
+      include: [
+        {
+          model: User,
+          attributes: ['name', 'email', 'profilePic'], // Add column names here inside attributes array.
+        },
+      ],
     });
     // eslint-disable-next-line no-undef
     const data = courses[i];
@@ -55,7 +60,7 @@ exports.createdby = async (req, res) => {
 // @desc     returns the course specified
 // @access   Private
 exports.specified = async (req, res) => {
-  const course = await Course.findByPk(req.params.courseID);
+  const course = await db.Course.findByPk(req.params.courseID);
 
   if (!course) res.status(404).json({ course: 'Course not found!' });
 
@@ -67,7 +72,7 @@ exports.specified = async (req, res) => {
 // @desc     returns the list of all courses, sorted by the date created
 // @access   Private
 exports.suggested = async (req, res) => {
-  const courses = await Course.find({});
+  const courses = await db.Course.find({});
 
   if (!courses) {
     res.status(404).json([]);
@@ -78,11 +83,12 @@ exports.suggested = async (req, res) => {
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < courses.length; i++) {
     const Inst = User.findByPk(courses[i].instructorID, {
-      include: [{
-        model: User,
-        attributes: ['name', 'email', 'profilePic'], // Add column names here inside attributes array.
-
-      }],
+      include: [
+        {
+          model: User,
+          attributes: ['name', 'email', 'profilePic'], // Add column names here inside attributes array.
+        },
+      ],
     });
     // eslint-disable-next-line no-undef
     courses[i].instructor = Inst;
@@ -96,7 +102,7 @@ exports.suggested = async (req, res) => {
 // @desc     Deletes the specified course
 // @access   Private && Instructor
 exports.destroy = async (req, res) => {
-  const course = await Course.findByPk(req.params.courseID);
+  const course = await db.Course.findByPk(req.params.courseID);
 
   if (!course) {
     res.status(404).json({ course: 'Course not found!' });

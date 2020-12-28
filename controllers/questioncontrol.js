@@ -1,14 +1,15 @@
 /* eslint-disable no-undef */
-const {
-  Course, Question, User,
-} = require('../models');
+// const {
+//   Course, Question, User,
+// } = require('../models');
+const db = require('../models/index');
 
 // ============================================================================
 // @route    POST: /api/questions/create
 // @desc     Ask a question
 // @access   Private
 exports.create = async (req, res) => {
-  const exists = await Course.findByPk(req.body.courseID);
+  const exists = await db.Course.findByPk(req.body.courseID);
   if (!exists) res.status(400).json({ course: 'Course does not exist!' });
 
   let q = req.body;
@@ -29,18 +30,23 @@ exports.create = async (req, res) => {
 // @desc     Get a list of questions asked in the given Course
 // @access   Private
 exports.askedin = async (req, res) => {
-  const { questions } = await Course.findOne({ where: { id: req.params.courseID }, include: ['questions', null, null, { sort: { sno: 1 } }] });
+  const { questions } = await db.Course.findOne({
+    where: { id: req.params.courseID },
+    include: ['questions', null, null, { sort: { sno: 1 } }],
+  });
   if (!questions) res.status(404).json([]);
 
   const result = [];
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < questions.length; i++) {
     const user = User.findByPk(questions[i].userID, {
-      include: [{
-        model: User,
-        attributes: ['name', 'email', 'role', 'profilePic'], // Add column names here inside attributes array.
-        required: true,
-      }],
+      include: [
+        {
+          model: User,
+          attributes: ['name', 'email', 'role', 'profilePic'], // Add column names here inside attributes array.
+          required: true,
+        },
+      ],
     });
     const data = { ...questions[i].doc };
     data.user = { ...user.doc };
@@ -54,7 +60,9 @@ exports.askedin = async (req, res) => {
 // @desc     Deletes the specified course
 // @access   Private && Instructor
 exports.delete1 = async (req, res) => {
-  const question = await Question.findByPk(req.params.questionID).include('answers');
+  const question = await db.Question.findByPk(req.params.questionID).include(
+    'answers'
+  );
 
   if (!question) {
     res.status(404).json({ question: 'Question not found!' });

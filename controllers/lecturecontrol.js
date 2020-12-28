@@ -1,4 +1,6 @@
-const { Course, Lecture } = require('../models');
+/* eslint-disable no-undef */
+// const { Course, Lecture } = require('../models');
+const db = require('../models/index');
 
 // ============================================================================
 // @route    POST: /api/lectures/create
@@ -7,7 +9,7 @@ const { Course, Lecture } = require('../models');
 exports.create = async (req, res) => {
   if (req.user.role !== 'Instructor') res.status(401).send('Unauthorized');
 
-  const exists = await Course.findByPk(req.body.courseID);
+  const exists = await db.Course.findByPk(req.body.courseID);
   if (!exists) res.status(400).json({ lecture: 'Course does not exist!' });
 
   let lecture = req.body;
@@ -29,7 +31,10 @@ exports.create = async (req, res) => {
 // @access   Private
 exports.lectureCourse = async (req, res) => {
   // get IDs of lectures:
-  const { lectures } = await Course.findOne({ where: { id: req.params.courseID }, include: ['lectures'] });
+  const { lectures } = await db.Course.findOne({
+    where: { id: req.params.courseID },
+    include: ['lectures'],
+  });
   if (!lectures) res.status(404).json([]);
 
   res.json(lectures);
@@ -40,7 +45,7 @@ exports.lectureCourse = async (req, res) => {
 // @desc     fetches the specified lecture
 // @access   Private
 exports.singleLecture = async (req, res) => {
-  const lecture = Lecture.findByPk(req.params.lectureID);
+  const lecture = await db.Lecture.findByPk(req.params.lectureID);
 
   if (lecture) res.json(lecture);
   else res.status(404).json({ lecture: 'Lecture not found!' });
@@ -51,16 +56,16 @@ exports.singleLecture = async (req, res) => {
 // @desc     Deletes the specified lecture
 // @access   Private && Instructor
 exports.destroy = async (req, res) => {
-  const lecture = await Lecture.findByPk(req.params.lectureID);
+  const lecture = await db.Lecture.findByPk(req.params.lectureID);
 
   if (!lecture) {
     res.status(404).json({ lecture: 'Lecture not found!' });
     return;
   }
 
-  const course = await Course.findByPk(lecture.courseID);
+  const course = await db.Course.findByPk(lecture.courseID);
 
-  if (toString(course.iid) !== toString(req.user.id)) {
+  if (toString(course.instructorID) !== toString(req.user.id)) {
     res.status(404).json({ lecture: 'Unauthorized action!' });
     return;
   }

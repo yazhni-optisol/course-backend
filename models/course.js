@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Enroll);
       this.hasMany(models.Lecture);
       this.hasMany(models.Question);
-      this.belongsTo(models.Instructor, { foreignKey: 'instructorID' });
+      this.belongsTo(models.Instructor);
     }
   }
 

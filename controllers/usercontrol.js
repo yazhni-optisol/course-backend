@@ -1,6 +1,6 @@
-const {
-  Information, Course, Enroll, User,
-} = require('../models');
+/* eslint-disable no-undef */
+// const { Information, Course, Enroll, User } = require('../models');
+const db = require('../models/index');
 
 // ============================================================================
 // @route    POST: /api/student/enroll/:courseID
@@ -9,7 +9,7 @@ const {
 exports.enroll = async (req, res) => {
   if (req.user.role !== Information) res.status(401).send('Unauthorized');
 
-  const exists = await Course.findByPk(req.params.courseID);
+  const exists = await db.Course.findByPk(req.params.courseID);
   if (!exists) res.status(400).json({ course: 'Course not found!' });
 
   let std = {};
@@ -30,7 +30,10 @@ exports.enroll = async (req, res) => {
 // @desc     Returns the students enrolled in the given course
 // @access   Private
 exports.enrolledin = async (req, res) => {
-  const { studentIDs } = await Course.findOne({ where: { id: req.params.courseID }, include: ['students', 'userID'] });
+  const { studentIDs } = await db.Course.findOne({
+    where: { id: req.params.courseID },
+    include: ['students', 'userID'],
+  });
 
   if (!studentIDs) res.status(404).json([]);
 
