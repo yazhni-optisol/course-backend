@@ -83,7 +83,7 @@ it generate the unique token for the user
 //@desc     Login user and generate token
 //@access   Public */
 
-exports.signin = async (req, res) => {
+exports.login = async (req, res) => {
   const { email, role, password } = req.body;
   const errors = [];
   // validation

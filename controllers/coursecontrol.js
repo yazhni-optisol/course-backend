@@ -9,14 +9,15 @@ const db = require('../models/index');
 // @desc     creates the course
 // @access   Private && Instructor
 exports.create = async (req, res) => {
+  console.log(req.body);
   if (req.user.role !== 'Instructor') res.status(401).send('Unauthorized');
-
   const course = req.body;
+
   const exists = await db.Course.findOne({ title: course.title });
   if (exists) res.status(400).json({ title: 'Title is already taken!' });
-
   course.instructorID = req.user.id;
   const newCourse = new Course(req.body);
+  console.log(newCourse);
   await newCourse.save();
   res.json(newCourse);
 };

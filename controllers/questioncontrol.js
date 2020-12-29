@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 /* eslint-disable no-undef */
 // const {
 //   Course, Question, User,
