@@ -15,13 +15,13 @@ exports.create = async (req, res) => {
   let lecture = req.body;
   lecture.linkID = lecture.link.slice(32);
   lecture.sno = exists.no_of_Lectures;
-  lecture = new Lecture(lecture);
+  lecture = db.Lecture.build(lecture);
   lecture = await lecture.save();
 
   const update = {};
   update.$inc = {};
   update.$inc.no_of_Lectures = 1;
-  await Course.update(exists.id, update, { new: true });
+  await db.Course.update(exists.id, update, { new: true });
   res.json(lecture);
 };
 

@@ -16,13 +16,13 @@ exports.create = async (req, res) => {
   let q = req.body;
   q.userID = req.user.id;
   q.sno = exists.no_of_Questions;
-  q = new Question(q);
+  q = db.Question.build(q);
   q = await q.save();
 
   const update = {};
   update.$inc = {};
   update.$inc.no_of_Questions = 1;
-  await Course.update(exists.id, update, { new: true });
+  await db.Course.update(exists.id, update, { new: true });
   res.json(q);
 };
 

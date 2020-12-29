@@ -15,13 +15,13 @@ exports.enroll = async (req, res) => {
   let std = {};
   std.courseID = exists.id;
   std.userID = req.user.id;
-  std = new Enroll(std);
+  std = db.Enroll.build(std);
   std = await std.save();
 
   const update = {};
   update.$inc = {};
   update.$inc.no_of_Students = 1;
-  await Course.update(exists.id, update, { new: true });
+  await db.Course.update(exists.id, update, { new: true });
   res.json({ success: true });
 };
 

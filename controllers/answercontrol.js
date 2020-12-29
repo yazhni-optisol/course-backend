@@ -13,13 +13,13 @@ exports.create = async (req, res) => {
   let a = req.body;
   a.userID = req.user.id;
   a.sno = exists.no_of_Answers;
-  a = new Answer(a);
+  a = db.Answer.build(a);
   a = await a.save();
 
   const update = {};
   update.$inc = {};
   update.$inc.no_of_Answers = 1;
-  await Question.update(exists.id, update, { new: true });
+  await db.Question.update(exists.id, update, { new: true });
   res.json(a);
 };
 

@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
   const exists = await db.Course.findOne({ title: course.title });
   if (exists) res.status(400).json({ title: 'Title is already taken!' });
   course.instructorID = req.user.id;
-  const newCourse = new Course(req.body);
+  const newCourse = db.Course.build(req.body);
   console.log(newCourse);
   await newCourse.save();
   res.json(newCourse);
@@ -83,7 +83,7 @@ exports.suggested = async (req, res) => {
   const result = [];
   // eslint-disable-next-line no-plusplus
   for (i = 0; i < courses.length; i++) {
-    const Inst = User.findByPk(courses[i].instructorID, {
+    const Inst = db.User.findByPk(courses[i].instructorID, {
       include: [
         {
           model: User,
